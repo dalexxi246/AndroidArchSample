@@ -1,23 +1,26 @@
 package com.android.luislenes.roomwordsample
 
 import android.app.Application
-import com.android.luislenes.roomwordsample.di.AppComponent
 import com.android.luislenes.roomwordsample.di.AppModule
-import com.android.luislenes.roomwordsample.di.DaggerAppComponent
+import com.android.luislenes.roomwordsample.di.DaggerWordsComponent
+import com.android.luislenes.roomwordsample.di.WordsComponent
+import com.android.luislenes.roomwordsample.di.WordsModule
 
 class WordApplication : Application() {
 
     companion object {
-        private lateinit var _appComponent : AppComponent
-        val appComponent : AppComponent get() = _appComponent
+        lateinit var app: WordApplication
     }
 
     override fun onCreate() {
         super.onCreate()
-        initializeDagger()
+        WordApplication.app = this
     }
 
-    private fun initializeDagger() {
-        _appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
+    fun getWordsComponent(): WordsComponent {
+        return DaggerWordsComponent.builder()
+                .appModule(AppModule(this))
+                .wordsModule(WordsModule())
+                .build()
     }
 }

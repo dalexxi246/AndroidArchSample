@@ -2,32 +2,33 @@ package com.android.luislenes.roomwordsample.ui.main
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import com.android.luislenes.roomwordsample.WordApplication
+import com.android.luislenes.roomwordsample.domain.WordsUseCase
 import com.android.luislenes.roomwordsample.persistence.Word
-import com.android.luislenes.roomwordsample.persistence.WordRepository
-import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val wordsUseCase: WordsUseCase) : ViewModel() {
 
-    @Inject
-    lateinit var repository: WordRepository
-    private val _allWords: LiveData<List<Word>>
-    val allWords get() = _allWords
-
-    init {
-        WordApplication.appComponent.inject(this)
-        _allWords = repository.allWords
+    fun getWords(): LiveData<List<Word>> {
+        return wordsUseCase.getAllWords()
     }
 
     fun insert(word: Word) {
-        repository.insert(word)
+        wordsUseCase.add(word)
     }
 
     fun deleteAll() {
-        repository.deleteAll()
+        wordsUseCase.deleteAll()
     }
 
     fun delete(word: Word) {
-        repository.delete(word)
+        wordsUseCase.delete(word)
+    }
+
+    class Factory : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val wordsUseCase = WordApplication.app.getWordsComponent().wordsUseCase()
+            return MainViewModel(wordsUseCase) as T
+        }
     }
 }

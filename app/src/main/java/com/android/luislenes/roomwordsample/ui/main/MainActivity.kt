@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity(), NewWordFragment.NewWordListener {
     }
 
     private fun setUpViewModel() {
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        mainViewModel.allWords.observe(this, Observer {
+        mainViewModel = ViewModelProviders.of(this, MainViewModel.Factory()).get(MainViewModel::class.java)
+        mainViewModel.getWords().observe(this, Observer {
             wordListAdapter.words = it
         })
     }
