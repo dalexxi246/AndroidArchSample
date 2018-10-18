@@ -20,4 +20,5 @@ interface WordDao {
 
     @Query("SELECT * FROM word_table ORDER BY word ASC")
     fun getAllWords() : LiveData<List<Word>>
+
 }
