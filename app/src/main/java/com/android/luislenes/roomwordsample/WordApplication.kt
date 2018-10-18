@@ -1,10 +1,12 @@
 package com.android.luislenes.roomwordsample
 
 import android.app.Application
-import com.android.luislenes.roomwordsample.di.AppModule
-import com.android.luislenes.roomwordsample.di.DaggerWordsComponent
-import com.android.luislenes.roomwordsample.di.WordsComponent
-import com.android.luislenes.roomwordsample.di.WordsModule
+import com.android.luislenes.roomwordsample.di.components.AppComponent
+import com.android.luislenes.roomwordsample.di.components.DaggerAppComponent
+import com.android.luislenes.roomwordsample.di.components.DaggerWordsComponent
+import com.android.luislenes.roomwordsample.di.components.WordsComponent
+import com.android.luislenes.roomwordsample.di.modules.AppModule
+import com.android.luislenes.roomwordsample.di.modules.WordsModule
 
 class WordApplication : Application() {
 
@@ -19,8 +21,12 @@ class WordApplication : Application() {
 
     fun getWordsComponent(): WordsComponent {
         return DaggerWordsComponent.builder()
-                .appModule(AppModule(this))
+                .appComponent(getAppComponent())
                 .wordsModule(WordsModule())
                 .build()
+    }
+
+    fun getAppComponent() : AppComponent {
+        return DaggerAppComponent.builder().appModule(AppModule(this)).build()
     }
 }

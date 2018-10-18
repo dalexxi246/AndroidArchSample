@@ -9,9 +9,7 @@ interface WordRepository {
     fun getAllWords() : LiveData<List<Word>>
 }
 
-class RoomWordRepository(appDatabase: AppDatabase) : WordRepository {
-
-    private val dao: WordDao = appDatabase.wordDao()
+class RoomWordRepository(private val dao: WordDao) : WordRepository {
 
     override fun getAllWords() : LiveData<List<Word>> {
         return dao.getAllWords()

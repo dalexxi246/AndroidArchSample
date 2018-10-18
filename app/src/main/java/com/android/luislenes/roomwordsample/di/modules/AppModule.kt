@@ -1,4 +1,4 @@
-package com.android.luislenes.roomwordsample.di
+package com.android.luislenes.roomwordsample.di.modules
 
 import android.arch.persistence.room.Room
 import android.content.Context
@@ -9,6 +9,12 @@ import javax.inject.Singleton
 
 @Module
 class AppModule(private val context: Context) {
+
+    @Provides
+    @Singleton
+    fun providesApplicationContext() : Context {
+        return context
+    }
 
     @Provides
     @Singleton

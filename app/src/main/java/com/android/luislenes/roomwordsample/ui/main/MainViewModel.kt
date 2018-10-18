@@ -6,6 +6,9 @@ import android.arch.lifecycle.ViewModelProvider
 import com.android.luislenes.roomwordsample.WordApplication
 import com.android.luislenes.roomwordsample.domain.WordsUseCase
 import com.android.luislenes.roomwordsample.persistence.Word
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainViewModel(private val wordsUseCase: WordsUseCase) : ViewModel() {
 
@@ -14,15 +17,21 @@ class MainViewModel(private val wordsUseCase: WordsUseCase) : ViewModel() {
     }
 
     fun insert(word: Word) {
-        wordsUseCase.add(word)
+        CoroutineScope(Dispatchers.Main).launch {
+            wordsUseCase.add(word)
+        }
     }
 
     fun deleteAll() {
-        wordsUseCase.deleteAll()
+        CoroutineScope(Dispatchers.Main).launch {
+            wordsUseCase.deleteAll()
+        }
     }
 
     fun delete(word: Word) {
-        wordsUseCase.delete(word)
+        CoroutineScope(Dispatchers.Main).launch {
+            wordsUseCase.delete(word)
+        }
     }
 
     class Factory : ViewModelProvider.Factory {
